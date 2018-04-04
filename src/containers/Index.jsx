@@ -17,7 +17,7 @@ class Index extends React.Component {
     let {text} = this.state;
     let {routes} = this.props;
     return (
-      <div>
+      <div className='wrapper'>
         index
       </div>
     );

@@ -4,7 +4,6 @@ import {
   BrowserRouter as Router,
   hashHistory
 } from 'react-router-dom';
-import './common/variables.less';
 
 import App from './App';
 

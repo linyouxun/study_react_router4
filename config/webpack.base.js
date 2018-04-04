@@ -4,6 +4,7 @@ const merge = require('webpack-merge');
 const rootDir = path.join(__dirname, '../');
 const theme = require('../src/common/theme');
 const PUBLIC_FOLDER = 'dist';
+const autoprefixer = require('autoprefixer');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const baseConfig = {
@@ -34,34 +35,72 @@ const baseConfig = {
       }, {
         test: /\.css$/,
         use: ExtractTextPlugin.extract({
-          fallback: "style-loader",
-          use: "css-loader"
+          // fallback: "style-loader",
+          use: [{
+            loader: "style-loader"
+          }, {
+            loader: "css-loader"
+          }, {
+            loader: 'postcss-loader'
+          }]
         })
       }, {
         test: /\.less$/,
-          use: ExtractTextPlugin.extract({
-            use: [{
-              loader: "css-loader"
-            }, {
-              loader: "less-loader",
-              options: { 
-                javascriptEnabled: true,
-                sourceMap: true,
-                modifyVars: theme()
-              } 
-            }],
-            fallback: "style-loader"
-        })
-      }, {
-        test: /\.scss$/,
-          use: ExtractTextPlugin.extract({
-            use: [{
-              loader: "css-loader"
-            }, {
-              loader: "sass-loader"
-            }],
-            fallback: "style-loader"
-        })
+        use : [
+          {loader : 'style-loader'},
+          {loader: 'css-loader',options: {importLoaders: 1}},
+          {loader: 'postcss-loader'},
+          {loader : 'less-loader',options: {javascriptEnabled: true,modifyVars: theme()}}
+        ]
+        // use: ExtractTextPlugin.extract({
+        //   use : [
+        //     {loader : 'style-loader'},
+        //     {loader: 'css-loader',options: {importLoaders: 1}},
+        //     {loader: 'postcss-loader'},
+        //     {loader : 'less-loader',options: {javascriptEnabled: true,modifyVars: theme()}}
+        //   ]
+          // use: [{
+          //   loader: "style-loader?sourceMap"
+          // }, {
+          //   loader: "css-loader?sourceMap",
+          //   options: {
+          //     importLoaders: 1
+          //   }
+          // }, {
+          //   loader: 'postcss-loader?sourceMap',
+          //   // options: { 
+          //   //   // parser: 'sugarss', 
+          //   //   exec: true,
+          //   //   plugins: () => [autoprefixer(
+          //   //     { browsers: ['iOS >= 7', 'Android >= 4.1', 
+          //   //        'last 10 Chrome versions', 'last 10 Firefox versions', 
+          //   //        'Safari >= 6', 'ie > 8'] 
+          //   //     }
+          //   //   )]
+          //   // } 
+          // }, {
+          //   loader: "less-loader?sourceMap",
+          //   options: { 
+          //     javascriptEnabled: true,
+          //     modifyVars: theme()
+          //   } 
+          // }],
+          // fallback: "style-loader"
+        // })
+      // }, {
+      //   test: /\.scss$/,
+      //     use: ExtractTextPlugin.extract({
+      //       use: [{
+      //         loader: "style-loader"
+      //       }, {
+      //         loader: "css-loader"
+      //       }, {
+      //         loader: 'postcss-loader'
+      //       }, {
+      //         loader: "sass-loader"
+      //       }],
+      //       // fallback: "style-loader"
+      //   })
       }, {
         test  : /\.(jpe?g|png|gif|svg|woff|eot|ttf)$/,
         use: `file-loader?limit=1&name=img/[sha512:hash:base64:7].[ext]`
@@ -69,7 +108,7 @@ const baseConfig = {
     ]
   },
   plugins: [
-    new ExtractTextPlugin("style.css")
+    // new ExtractTextPlugin("style.css")
   ]
 }
 
@@ -92,7 +131,12 @@ switch(process.env.NODE_ENV) {
         //   filename: 'static/index.html',
         //   template: path.join(rootDir, './src/index.html')
         // })
-      ]
+      ],
+      optimization: {
+        splitChunks: {
+          chunks: 'all'
+        }
+      }
     };
     break;
   }
