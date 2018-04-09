@@ -1,27 +1,31 @@
 import React from 'react';
+
 class TestDOMInner extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      pathName: ''
-    }
+      pathName: '',
+    };
   }
   componentDidMount() {
-    this.setState({
-      pathName: window.location.pathname
-    })
+    this.fun();
   }
 
+  fun() {
+    this.setState({
+      pathName: window.location.pathname,
+    });
+  }
 
   render() {
-    let {pathname} = this.state;
+    const { pathName } = this.state;
     return (
       <div>
-        {pathname}
+        {pathName}
         TestDOMInner
       </div>
     );
   }
 }
 
-export default TestDOMInner
+export default TestDOMInner;

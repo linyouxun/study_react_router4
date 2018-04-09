@@ -1,14 +1,7 @@
 import React from 'react';
-import {
-  Switch, 
-  Route,
-  Link
-} from 'react-router-dom';
-import TestDOMInner from './TestDOMInner';
+// import { Switch, Route, Link } from 'react-router-dom';
+
 class TestDOM extends React.Component {
-  constructor(props) {
-    super(props);
-  }
   componentDidMount() {
   }
 
@@ -23,4 +16,4 @@ class TestDOM extends React.Component {
   }
 }
 
-export default TestDOM
+export default TestDOM;

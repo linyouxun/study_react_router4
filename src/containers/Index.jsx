@@ -1,27 +1,28 @@
 import React from 'react';
-import './Index.less';
+import './Index.scss';
+
 class Index extends React.Component {
   constructor(props) {
     super(props);
     this.textInput = '';
     this.state = {
-      collapsed: false,
-      text: ''
+      // text: '',
     };
   }
+
   componentDidMount() {
   }
 
 
   render() {
-    let {text} = this.state;
-    let {routes} = this.props;
+    // let { text } = this.state;
+    // let { routes } = this.props;
     return (
-      <div className='wrapper'>
+      <div className="wrapper">
         index
       </div>
     );
   }
 }
 
-export default Index
+export default Index;

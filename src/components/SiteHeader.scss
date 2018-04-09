@@ -1,26 +1,26 @@
-@import '../common/variables.less';
-@base-color:@minor-color; //#58A83F;
-@bar-height:3rem;
+@import '../common/variables.scss';
+$base-color:$minor-color; //#58A83F;
+$bar-height:3rem;
 
 .component.site-header{
-  height: @bar-height;
+  height: $bar-height;
   //background: linear-gradient(to bottom, #7CCA5E, #58A83F);
-  background-color: @minor-color;
-  border-bottom: 1px solid @base-color;
-  @img: '../common/img/logo.png';
+  background-color: $minor-color;
+  border-bottom: 1px solid $base-color;
+  $img: '../common/img/logo.png';
   .header-logo{
     display: block;
     width: 200px;
-    height: @bar-height;
+    height: $bar-height;
     float: left;
-    background: url(@img) center no-repeat;
+    background: url($img) center no-repeat;
     // background-size: 80%;
-    -webkit-filter: drop-shadow(1px 1px 1px darken(@base-color,5));
-    filter: drop-shadow(1px 1px 1px darken(@base-color,5));
+    -webkit-filter: drop-shadow(1px 1px 1px darken($base-color,5));
+    filter: drop-shadow(1px 1px 1px darken($base-color,5));
   }
   .header-content{}
   .header-action{
-    line-height: @bar-height;
+    line-height: $bar-height;
     color: #fff;
     font-size: .7rem;
     text-align: right;
