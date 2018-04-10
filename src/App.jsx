@@ -3,7 +3,7 @@ import { Switch, Route, withRouter } from 'react-router-dom';
 import { Menu, Icon, Layout, Breadcrumb } from 'antd';
 import SiteHeader from './components/SiteHeader';
 import routes from './routes';
-import './App.scss';
+import './App.less';
 
 const { Content, Footer, Sider } = Layout;
 const { SubMenu, Item } = Menu;

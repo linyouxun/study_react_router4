@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Icon, Menu, Dropdown } from 'antd';
-import './SiteHeader.scss';
+import './SiteHeader.less';
 
 export class SiteHeader extends Component {
   // constructor(props){

@@ -1,5 +1,5 @@
 import React from 'react';
-import './Index.scss';
+import './Index.less';
 
 class Index extends React.Component {
   constructor(props) {
