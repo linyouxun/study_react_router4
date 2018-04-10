@@ -16,7 +16,6 @@ const htmlDOM = (html) => {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="http://static.yoju360.com/favicon.ico">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="/css/lib.css">
     <link rel="stylesheet" href="/css/style.css">
     <title>热牧</title>
   </head>
@@ -24,7 +23,7 @@ const htmlDOM = (html) => {
     <div id="root">${html}</div>
     <script type="text/javascript" src="/runtime~app.js"></script>
     <script type="text/javascript" src="/lib.js"></script>
-    <script type="text/javascript" src="/vendors~app.js"></script>
+    <script type="text/javascript" src="/style.js"></script>
     <script type="text/javascript" src="/app.js"></script>
   </body>
   </html>`;

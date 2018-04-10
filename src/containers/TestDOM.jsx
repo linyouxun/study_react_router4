@@ -7,7 +7,7 @@ class TestDOM extends React.Component {
 
 
   render() {
-    console.log('TestDOM');
+    // console.log('TestDOM');
     return (
       <div>
         TestDOM

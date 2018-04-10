@@ -52,17 +52,16 @@ const eslintrc = {
     'linebreak-style': 0,
     'no-extra-boolean-cast': 0,
     'no-plusplus': 0,
-    'no-bitwise': 0
+    'no-bitwise': 0,
+    'no-console': 2,
   },
 };
-
-if (process.env.RUN_ENV === 'development') {
+if (process.env.NODE_ENV === 'development') {
   // eslintrc.globals = {
   //   React: true,
   //   ReactDOM: true,
   //   mountNode: true,
   // };
-
   Object.assign(eslintrc.rules, {
     // indent: 0,
     'no-console': 1,

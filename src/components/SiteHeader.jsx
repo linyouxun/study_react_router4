@@ -11,8 +11,9 @@ export class SiteHeader extends Component {
   // componentDidMount(){
   // }
 
-  onClick({ key }) {
-    console.log(key);
+  // onClick({ key }) {
+  onClick() {
+    // console.log(key);
   }
 
   render() {

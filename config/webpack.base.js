@@ -5,11 +5,14 @@ const rootDir = path.join(__dirname, '../');
 const theme = require('../src/common/theme');
 const PUBLIC_FOLDER = 'dist';
 // const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+// const ExtractTextPlugin = require('extract-text-webpack-plugin');
+// const styleExtractor = new ExtractTextPlugin('css/style.css', { allChunks: true });
+// const libExtractor = new ExtractTextPlugin('css/lib.css', { allChunks: true });
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const Clean = require('clean-webpack-plugin');
-const styleExtractor = new ExtractTextPlugin('css/style.css', { allChunks: true });
-const libExtractor = new ExtractTextPlugin('css/lib.css', { allChunks: true });
-const isDev = process.env.NODE_ENV === 'development';
+// const isDev = process.env.NODE_ENV === 'development';
 const baseConfig = {
   context: path.join(rootDir, 'src'),
   output: {
@@ -43,53 +46,67 @@ const baseConfig = {
         }],
       }, {
         test: /\.css$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: [{
-          //   loader: 'style-loader'
-          // }, {
-            loader: 'css-loader',
-            options: {
-              minimize: !isDev, // css压缩
-            },
-          }, {
-            loader: 'postcss-loader',
-          }],
-        }),
+        use: [
+          MiniCssExtractPlugin.loader,
+          // { loader: 'style-loader' },
+          { loader: 'css-loader', options: { importLoaders: 1 } },
+          { loader: 'postcss-loader' },
+        ],
+        // use: ExtractTextPlugin.extract({
+        //   fallback: 'style-loader',
+        //   use: [{
+        //   //   loader: 'style-loader'
+        //   // }, {
+        //     loader: 'css-loader',
+        //     options: {
+        //       minimize: !isDev, // css压缩
+        //     },
+        //   }, {
+        //     loader: 'postcss-loader',
+        //   }],
+        // }),
       }, {
         test: /\.less$/,
-        // use : [
-        //   {loader : 'style-loader'},
-        //   {loader: 'css-loader',options: {importLoaders: 1}},
-        //   {loader: 'postcss-loader'},
-        //   {loader : 'less-loader',options: {javascriptEnabled: true,modifyVars: theme()}}
-        // ]
-        use: libExtractor.extract({
-          fallback: 'style-loader',
-          use: [
-            // { loader: 'style-loader'},
-            { loader: 'css-loader', options: { importLoaders: 1, minimize: !isDev } },
-            { loader: 'postcss-loader' },
-            { loader: 'less-loader', options: { javascriptEnabled: true, modifyVars: theme() } },
-          ],
-        }),
+        use: [
+          MiniCssExtractPlugin.loader,
+          // { loader: 'style-loader' },
+          { loader: 'css-loader', options: { importLoaders: 1 } },
+          { loader: 'postcss-loader' },
+          { loader: 'less-loader', options: { javascriptEnabled: true, modifyVars: theme() } },
+        ],
+        // use: libExtractor.extract({
+        //   fallback: 'style-loader',
+        //   use: [
+        //     // { loader: 'style-loader'},
+        //     { loader: 'css-loader', options: { importLoaders: 1, minimize: !isDev } },
+        //     { loader: 'postcss-loader' },
+        //     { loader: 'less-loader', options: { javascriptEnabled: true, modifyVars: theme() } },
+        //   ],
+        // }),
       }, {
         test: /\.scss$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: [{
-          //   loader: 'style-loader'
-          // }, {
-            loader: 'css-loader',
-            options: {
-              minimize: !isDev, // css压缩
-            },
-          }, {
-            loader: 'postcss-loader',
-          }, {
-            loader: 'sass-loader',
-          }],
-        }),
+        use: [
+          MiniCssExtractPlugin.loader,
+          // { loader: 'style-loader' },
+          { loader: 'css-loader', options: { importLoaders: 1 } },
+          { loader: 'postcss-loader' },
+          { loader: 'sass-loader' },
+        ],
+        // use: ExtractTextPlugin.extract({
+        //   fallback: 'style-loader',
+        //   use: [{
+        //   //   loader: 'style-loader'
+        //   // }, {
+        //     loader: 'css-loader',
+        //     options: {
+        //       minimize: !isDev, // css压缩
+        //     },
+        //   }, {
+        //     loader: 'postcss-loader',
+        //   }, {
+        //     loader: 'sass-loader',
+        //   }],
+        // }),
       }, {
         test: /\.(jpe?g|png|gif|svg|woff|eot|ttf)$/,
         use: 'file-loader?limit=1&name=img/[sha512:hash:base64:7].[ext]',
@@ -100,8 +117,12 @@ const baseConfig = {
   //   jquery: 'jQuery'
   // },
   plugins: [
-    styleExtractor,
-    libExtractor,
+    // styleExtractor,
+    // libExtractor,
+    new MiniCssExtractPlugin({
+      filename: 'css/[name].css',
+      chunkFilename: 'css/[name].css',
+    }),
   ],
 };
 
@@ -113,7 +134,7 @@ switch (process.env.NODE_ENV) {
     extra = {
       entry: {
         app: ['./index'],
-        lib: ['react', 'react-dom', 'react-router', 'react-router-dom']
+        lib: ['react', 'react-dom', 'react-router', 'react-router-dom'],
       },
       devtool: 'source-map',
       plugins: [
@@ -123,12 +144,18 @@ switch (process.env.NODE_ENV) {
         //   template: path.join(rootDir, './src/index.html')
         // })
       ],
-      // optimization: {
-      //   runtimeChunk: true,
-      //   splitChunks: {
-      //     chunks: 'all'
-      //   }
-      // }
+      optimization: {
+        splitChunks: {
+          cacheGroups: {
+            styles: {
+              name: 'style',
+              test: /\.(scss|css|less)$/,
+              chunks: 'all', // merge all the css chunk to one file
+              enforce: true,
+            },
+          },
+        },
+      },
     };
     break;
   }
@@ -144,6 +171,14 @@ switch (process.env.NODE_ENV) {
       ],
       optimization: {
         runtimeChunk: true,
+        minimizer: [
+          new UglifyJsPlugin({
+            cache: true,
+            parallel: true,
+            sourceMap: true, // set to true if you want JS source maps
+          }),
+          new OptimizeCSSAssetsPlugin({}),
+        ],
         splitChunks: {
           chunks: 'all',
           minSize: 30000, // （默认值：30000）块的最小大小。
@@ -156,11 +191,14 @@ switch (process.env.NODE_ENV) {
               name: 'lib',
               chunks: 'all',
             },
-            // commons2: {
-            //   test: /\.css$|\.less$|\.scss$/,
-            //   name: 'style',
-            //   chunks: 'all',
-            // }
+            styles: {
+              test: /\.css$|\.less$|\.scss$/,
+              name: 'style',
+              chunks: 'all',
+              minChunks: 1,
+              reuseExistingChunk: true,
+              enforce: true,
+            },
           },
         },
       },
