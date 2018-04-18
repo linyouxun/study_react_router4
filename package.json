@@ -4,13 +4,12 @@
   "description": "热牧后台",
   "main": "index.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=development webpack --mode development --config ./config/webpack.base.js ",
-    "server": "nodemon server/index",
-    "proStart": "cross-env NODE_ENV=production webpack --mode production --config ./config/webpack.base.js ",
-    "pro": "nodemon server/indexServer",
-    "devstart": "webpack --mode development --config ./config/webpack.dev.js ",
-    "stgstart": "webpack --mode production --config ./config/webpack.stg.js ",
-    "prostart": "webpack --mode production --config ./config/webpack.pro.js ",
+    "start": "webpack-dev-server --config ./config/webpack.local.js ",
+    "dev": "nodemon server/index",
+    "stgBuild": "npm run build",
+    "stg": "npm run pro",
+    "build": "cross-env NODE_ENV=production webpack --mode production --config ./config/webpack.pro.js ",
+    "pro": "node server/indexServer",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -64,9 +63,9 @@
     "sugarss": "^1.0.1",
     "uglifyjs-webpack-plugin": "^1.2.4",
     "url-loader": "^1.0.0-beta.0",
-    "webpack": "^4.5.0",
+    "webpack": "^4.6.0",
     "webpack-cli": "^2.0.13",
-    "webpack-dev-server": "^3.1.2",
+    "webpack-dev-server": "^3.1.3",
     "webpack-merge": "^4.1.2"
   }
 }
